@@ -1,0 +1,71 @@
+plugins {
+	id 'org.springframework.boot' version '2.6.3'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'com.github.sherter.google-java-format' version '0.9'
+}
+
+group = 'com.cg'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('msToolkitVersion', "0.7.9")
+	set('lombokMapstructBindingVersion', "0.2.0")
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "com.naharoo.commons:ms-toolkit-bom:${msToolkitVersion}"
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.flywaydb:flyway-core'
+
+	annotationProcessor 'org.mapstruct:mapstruct-processor'
+	implementation 'org.mapstruct:mapstruct'
+	implementation 'com.naharoo.commons:ms-toolkit-rest-exception-handler-starter'
+	implementation 'com.naharoo.commons:mapstruct-facade-spring-boot-starter'
+	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+	compileOnly "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+	compileOnly "org.projectlombok:lombok-mapstruct-binding"
+	annotationProcessor 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok'
+	compileOnly 'com.google.googlejavaformat:google-java-format:1.9'
+
+	runtimeOnly 'mysql:mysql-connector-java'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testAnnotationProcessor 'org.mapstruct:mapstruct-processor'
+	testImplementation 'org.mapstruct:mapstruct'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
+	testImplementation 'org.jeasy:easy-random-core:5.0.0'
+	testImplementation 'com.h2database:h2'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+	options.incremental = false
+	options.compilerArgs += [
+			'-Amapstruct.defaultComponentModel=spring',
+			'-Amapstruct.unmappedTargetPolicy=ERROR'
+	]
+}

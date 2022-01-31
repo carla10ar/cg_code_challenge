@@ -1,0 +1,37 @@
+# Application
+server:
+  port: 8181
+  servlet:
+    application-display-name: code-challenge
+    encoding:
+      enabled: true
+      charset: UTF-8
+      force: true
+
+# Framework
+spring:
+  application:
+    name: codee-challenge
+  profiles:
+    active: local
+  datasource:
+    name: code-challenge-datasource
+    url: jdbc:mysql://localhost:3306/cg?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 10
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: false
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
